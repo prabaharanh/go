@@ -9,6 +9,19 @@ services:
     command: go run main.go
     links:
       - redis
-      
+      - postgres
+
   redis:
     image: redis:alpine
+
+  postgres:
+    image: postgres:alpine
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres/data:/var/lib/postgres/data
+
+    environment:
+      POSTGRES_PASSWORD: test123
+      POSTGRES_DB: test
+    expose:
+     - "5432"
